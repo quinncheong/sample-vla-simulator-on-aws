@@ -16,3 +16,9 @@ __pycache__/
 # CDK context cache — may embed account id / AZ lookups; never commit (regenerated on synth)
 cdk.context.json
 cdk/cdk.context.json
+
+# Planning/session artifacts — private workflow state, not for public repos
+plans/sessions/
+plans/features/
+plans/STATUS.md
+plans/baseline.json
