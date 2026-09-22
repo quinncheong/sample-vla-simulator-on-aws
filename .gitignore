@@ -16,3 +16,7 @@ __pycache__/
 # CDK context cache — may embed account id / AZ lookups; never commit (regenerated on synth)
 cdk.context.json
 cdk/cdk.context.json
+
+# Local env files — may hold secrets; never commit (a local copy stays on disk for its owner)
+.env
+.env.*
