@@ -1,0 +1,12 @@
+# Push-protection substitute (security ring 2, qs-5ih): GHAS push protection is not available on
+# private repos, so gitleaks scans the staged diff before the commit exists. The fleet scanner's
+# policy ring (security_scan.py precommit_checks) asserts every owned repo carries this hook;
+# copy it from here. `language: system` uses the gitleaks binary on the box, no download.
+repos:
+  - repo: local
+    hooks:
+      - id: gitleaks
+        name: gitleaks (staged diff)
+        entry: gitleaks git --pre-commit --staged --redact --no-banner
+        language: system
+        pass_filenames: false
