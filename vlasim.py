@@ -311,7 +311,7 @@ def run_doctor(vla=None, region=None, email=None, quiet_header=False):
             if "does not exist" in str(e) or code in ("ValidationError",):
                 d.fail(f"CDK not bootstrapped in {region}",
                        f"run: python vlasim.py init --bootstrap   "
-                       f"(or: cd cdk && npx cdk bootstrap aws://{account}/{region})")
+                       f"(or: cd cdk && npx cdk bootstrap --app '' aws://{account}/{region})")
             else:
                 d.warn(f"could not verify CDK bootstrap: {code or type(e).__name__}")
         except BotoCoreError as e:
@@ -455,7 +455,10 @@ def _cdk_bootstrap(region):
         return 1
     target = f"aws://{account}/{region}"
     print(f"[init] cdk bootstrap {target}")
-    res = _run([npx, "cdk", "bootstrap", target], cwd=str(CDK_DIR))
+    # --app '' skips synthesizing the CDK app. Without it the CLI runs cdk/bin/app.ts, which
+    # throws unless `-c vla=...` is set and the rendered userdata exists — neither is true at
+    # bootstrap time. The toolkit stack does not depend on the app, so an explicit target is enough.
+    res = _run([npx, "cdk", "bootstrap", "--app", "", target], cwd=str(CDK_DIR))
     return res.returncode
 
 
